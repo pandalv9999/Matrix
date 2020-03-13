@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "283643019814",
+    "firebase_url": "https://matrix-mar8-rujun.firebaseio.com",
+    "project_id": "matrix-mar8-rujun",
+    "storage_bucket": "matrix-mar8-rujun.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:283643019814:android:6f95050718a999ba9d5ce7",
+        "android_client_info": {
+          "package_name": "com.laioffer.matrix"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "283643019814-s8ns3849jrqa3mp6inin64sbjj6ti0u8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.laioffer.matrix",
+            "certificate_hash": "890d8d529a54f4c95df795fa624dd36ed250dd19"
+          }
+        },
+        {
+          "client_id": "283643019814-v99lpmi3jha98ukkliuj0hi8kd6bd9uv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1y5vmC8FSOYV7AT8nvruoaOQTm08TMqc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "283643019814-v99lpmi3jha98ukkliuj0hi8kd6bd9uv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
