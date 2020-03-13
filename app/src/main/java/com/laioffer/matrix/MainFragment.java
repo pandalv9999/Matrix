@@ -9,10 +9,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 /**
@@ -21,6 +28,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 public class MainFragment extends Fragment implements OnMapReadyCallback {
     private MapView mapView;
     private View view;
+    private GoogleMap googleMap;
+    private LocationTracker locationTracker;
+    private FloatingActionButton fabReport;
 
     public static MainFragment newInstance() {
 
@@ -47,7 +57,18 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mapView = (MapView) view.findViewById(R.id.event_map_view);
+        mapView = view.findViewById(R.id.event_map_view);
+
+        fabReport = view.findViewById(R.id.fab);
+        fabReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //show dialog
+            }
+        });
+
+
+
         if (mapView != null) {
             mapView.onCreate(null);
             mapView.onResume();// needed to get the map to display immediately
@@ -83,7 +104,35 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
 
-        double latitude = 30.592995;
+        this.googleMap = googleMap;
+        this.googleMap.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                        getActivity(), R.raw.style_json));
+
+        locationTracker = new LocationTracker(getActivity());
+        locationTracker.getLocation();
+
+        LatLng latLng = new LatLng(locationTracker.getLatitude(), locationTracker.getLongitude());
+
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(latLng)
+                .zoom(16)
+                .bearing(90)
+                .tilt(30)
+                .build();
+
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+        MarkerOptions marker = new MarkerOptions().position(latLng).
+                title("You");
+
+        // Changing marker icon
+        marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.boy));
+
+        // adding marker
+        googleMap.addMarker(marker);
+
+
     }
 
 }
