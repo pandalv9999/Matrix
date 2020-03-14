@@ -19,6 +19,8 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
 
     private OnClickListener mClickListener;
 
+
+
     public interface OnClickListener{
         public void setItem(String item);
     }
