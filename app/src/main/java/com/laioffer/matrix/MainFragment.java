@@ -29,7 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainFragment extends Fragment implements OnMapReadyCallback {
+public class MainFragment extends Fragment implements OnMapReadyCallback, ReportDialog.DialogCallBack {
     private MapView mapView;
     private View view;
     private GoogleMap googleMap;
@@ -123,6 +123,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
         int cx = (int) (fabReport.getX() + (fabReport.getWidth() / 2));
         int cy = (int) (fabReport.getY()) + fabReport.getHeight() + 56;
         dialog = ReportDialog.newInstance(getContext(), cx, cy);
+        dialog.setDialogCallBack(this);
         dialog.show();
     }
 
@@ -196,4 +197,13 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
+    @Override
+    public void onSubmit(String editString, String event_type) {
+        String key = uploadEvent(Config.username, editString, event_type);
+    }
+
+    @Override
+    public void startCamera() {
+
+    }
 }

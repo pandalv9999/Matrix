@@ -43,6 +43,12 @@ public class ReportDialog extends Dialog {
     private ImageView mEventTypeImg;
     private TextView mTypeTextView;
 
+    private DialogCallBack mDialogCallBack;
+
+    interface DialogCallBack {
+        void onSubmit(String editString, String event_type);
+        void startCamera();
+    }
 
 
 
@@ -89,6 +95,9 @@ public class ReportDialog extends Dialog {
                 return false;
             }
         });
+
+
+
 
 
         setupRecyclerView(dialogView);
@@ -157,7 +166,8 @@ public class ReportDialog extends Dialog {
         if (mViewSwitcher != null) {
             mViewSwitcher.showNext();
             mTypeTextView.setText(mEventype);
-            mEventTypeImg.setImageDrawable(ContextCompat.getDrawable(getContext(),Config.trafficMap.get(mEventype)));
+            mEventTypeImg.setImageDrawable(ContextCompat.
+                    getDrawable(getContext(),Config.trafficMap.get(mEventype)));
 
         }
     }
@@ -169,6 +179,34 @@ public class ReportDialog extends Dialog {
         mCommentEditText = (EditText) dialogView.findViewById(R.id.event_comment);
         mEventTypeImg = (ImageView) dialogView.findViewById(R.id.event_type_img);
         mTypeTextView = (TextView) dialogView.findViewById(R.id.event_type);
+
+        mSendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDialogCallBack.onSubmit(mCommentEditText.getText().toString(), mEventype);
+
+            }
+        });
+
+        mSendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialogCallBack.onSubmit(mCommentEditText.getText().toString(),
+                        mEventype);
+            }
+        });
+
+        mBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewSwitcher.showPrevious();
+            }
+        });
+
+    }
+
+    public void setDialogCallBack(DialogCallBack dialogCallBack) {
+        mDialogCallBack = dialogCallBack;
     }
 
 
