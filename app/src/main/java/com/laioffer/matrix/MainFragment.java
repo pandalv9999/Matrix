@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -422,7 +423,40 @@ public class MainFragment extends Fragment implements OnMapReadyCallback,
         mEventTextLike.setText(String.valueOf(likeNumber));
         mEventTextType.setText(type);
 
-        mEventImageType.setImageDrawable(ContextCompat.getDrawable(getContext(), Config.trafficMap.get(type)));
+        final String url = mEvent.getImgUri();
+
+        if (url == null) {
+            mEventImageType.setImageDrawable(ContextCompat.getDrawable(getContext(), Config.trafficMap.get(type)));
+        } else {
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Log.d("Here", Thread.currentThread().getName());
+//                    final Bitmap bitmap = Utils.getBitmapFromURL(url);
+//                    getActivity().runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            mEventImageType.setImageBitmap(bitmap);
+//                        }
+//                    });
+//                }
+//            }).start();
+            new AsyncTask<Void, Void, Bitmap>() {
+                @Override
+                protected Bitmap doInBackground(Void... voids) {
+                    Bitmap bitmap = Utils.getBitmapFromURL(url);
+                    return bitmap;
+                }
+
+                @Override
+                protected void onPostExecute(Bitmap bitmap) {
+                    super.onPostExecute(bitmap);
+                    mEventImageType.setImageBitmap(bitmap);
+                }
+            }.execute();
+        }
+
+
 
         if (user == null) {
             user = "";
@@ -466,6 +500,16 @@ public class MainFragment extends Fragment implements OnMapReadyCallback,
         mEventTextType = (TextView) view.findViewById(R.id.event_info_type_text);
         mEventTextLocation = (TextView) view.findViewById(R.id.event_info_location_text);
         mEventTextTime = (TextView) view.findViewById(R.id.event_info_time_text);
+
+        mEventImageLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int number = Integer.parseInt(mEventTextLike.getText().toString());
+                database.child("events").child(mEvent.getId()).child("event_like_number").setValue(number + 1);
+                mEventTextLike.setText(String.valueOf(number + 1));
+            }
+        });
+
     }
 
 }
